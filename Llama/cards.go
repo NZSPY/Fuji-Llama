@@ -388,25 +388,6 @@ func CheckGameEnd() bool {
 	return scorenotmax
 }
 
-// show game over summary and the winner etc
-func DisplayGameEnd() {
-	fmt.Println("The Game is Over")
-	players := [6]players{}
-	for i := 0; i < numberplayers; i++ {
-		fmt.Println(playername[i], "has", playerwhitecounters[i], "white counters and",
-			playerblackcounters[i], "black counters and a total score of",
-			playerscore[i])
-		players[i].name = playername[i]
-		players[i].score = playerscore[i]
-	}
-	fmt.Println("not sorted Sorted by score:", players)
-	s := players[:]
-	sort.Slice(s, func(i, j int) bool { return s[i].score < s[j].score })
-	//sort.Slice(players, func(i, j int) bool { return players[i].score < players[j].score })
-	fmt.Println("Sorted by score:", players)
-	fmt.Println("The winner is", players[0])
-}
-
 // check count of players active
 func AmIalone() bool {
 	notactivecount := 0
@@ -417,4 +398,23 @@ func AmIalone() bool {
 		}
 	}
 	return notactivecount >= (numberplayers - 1)
+}
+
+// show game over summary and the winner etc
+func DisplayGameEnd() {
+	fmt.Println("The Game is Over")
+	players := [10]players{}
+	for i := 0; i < numberplayers; i++ {
+		fmt.Println(playername[i], "has", playerwhitecounters[i], "white counters and",
+			playerblackcounters[i], "black counters and a total score of",
+			playerscore[i])
+		players[i].name = playername[i]
+		players[i].score = playerscore[i]
+	}
+
+	s := players[:numberplayers]
+
+	sort.Slice(s, func(i, j int) bool { return s[i].score < s[j].score })
+	fmt.Println("Sorted by score:", players)
+	fmt.Println("The winner is", players[0])
 }
