@@ -8,17 +8,23 @@ But you can play Llama just install Go onto your computer and download the code 
 
 You can  play Llama in your terminal program as 1 player (Me) against up to 5 AI bots
 
-# The gamem of Llama 
+# The game of Llama 
 
-In the L.L.A.M.A. card game, the goal is to get rid of all your cards by playing them in sequence, either matching the top card of the discard pile or playing one number higher, including llamas, which can be played on 6s or other llamas. Players can also draw cards or quit the round, with penalties assessed based on the cards left in hand at the end of the round. The game continues until a player reaches 40 points, with the lowest score winning. 
+In the L.L.A.M.A. card game, the goal is to get rid of all your cards by playing them in sequence, 
+either matching the top card of the discard pile or playing one number higher, 
+including llamas, which can be played on 6s or other llamas. 
+Players can also draw cards or quit the round, 
+with penalties assessed based on the cards left in hand at the end of the round. 
+The game continues until a player reaches 40 points, with the lowest score winning. 
+
 Here's a more detailed breakdown:
-Game Setup:
-Players: 2-6 players. 
+# Game Setup:
+Players: 2-6 players. (you and 1 up to 5 AI bots)
 Cards: A deck of cards with numbers 1-6 and llamas, with eight copies of each. 
 Point Tokens: White (worth 1 point) and black (worth 10 points) are used for scoring. 
 Dealing: Each player gets six cards dealt face down. 
 Discard Pile: One card is flipped from the deck to start the discard pile. 
-Gameplay:
+# Gameplay:
 1. Turns:
 Players take turns in clockwise order. 
 2. Playing a Card:
@@ -29,6 +35,7 @@ If you can't or don't want to play, you can draw the top card from the deck.
 If you choose to fold, you place your remaining cards face down and take no further action in the round. 
 5. Round End:
 The round ends when one player empties their hand or all players have folded. 
+
 Scoring:
 Cards in Hand: Each unique number card in your hand is worth its face value in points (e.g., a 3 is worth 3 points). 
 Llamas: Each llama card in your hand is worth 10 points. 
