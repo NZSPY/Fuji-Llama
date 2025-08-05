@@ -2,7 +2,7 @@
 This is a Llama Card game server written in GO. 
 This is my application written in GO, 
 
-so has been a learnign exersise in Go so probaly not the best coding example. 
+so has been a learning exercise in Go so probably not the best coding example. 
 
 But you can play Llama just install Go onto your computer and download the code and run it
 
@@ -36,12 +36,17 @@ If you choose to fold, you place your remaining cards face down and take no furt
 5. Round End:
 The round ends when one player empties their hand or all players have folded. 
 
-Scoring:
-Cards in Hand: Each unique number card in your hand is worth its face value in points (e.g., a 3 is worth 3 points). 
-Llamas: Each llama card in your hand is worth 10 points. 
-Discarded Cards: Cards played and discarded are not counted towards your score. 
-Returning Tokens: If you manage to play all your cards, you can return one token (black or white) to the supply. 
-Winning:
+# Scoring:
+Cards in Hand: Each unique number card in your hand is worth its face value in points (e.g., a 3 is worth 3 points).
+ 
+Llamas: Each llama card in your hand is worth 10 points.
+ 
+Discarded Cards: Cards played and discarded are not counted towards your score.
+ 
+Returning Tokens: If you manage to play all your cards, you can return one token (black or white) to the supply.
+(this happens automatically) 
+
+# Winning:
 Point Accumulation: Players accumulate points based on the cards left in their hand at the end of each round. 
 Game End: The game ends when at least one player has 40 or more points. 
 Winner: The player with the lowest score wins. 
