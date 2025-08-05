@@ -1,10 +1,10 @@
 # Fuji-Llama 
-This is a Llama Card game server written in GO.
-This is my application written in GO,
+This is a Llama Card game server written in GO.\
+This is my application written in GO,\
 
-so has been a learning exercise in Go so probably not the best coding example.
-But you can play Llama just install Go onto your computer and download the code and run it
-You can  play Llama in your terminal program as 1 player (Me) against up to 5 AI bots
+so has been a learning exercise in Go so probably not the best coding example.\
+But you can play Llama just install Go onto your computer and download the code and run it\
+You can  play Llama in your terminal program as 1 player (Me) against up to 5 AI bots\
 
 # The game of Llama
 
