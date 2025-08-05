@@ -256,7 +256,7 @@ func CheckVaildMoves(index int) string {
 		validmove = "CcFf" // Can play current card  or fold
 	case nextcardcount > 0 && (activePlayerCount == 1 || decksize < 1): // If they have just the next card but your the only player left or deck is depleted
 		validmove = "NnFf" // Can play next card or fold
-	case decksize > 0: // if there are cards left in the deck you can draw or fold
+	case decksize > 0 && activePlayerCount > 1: // if there are cards left in the deck you can draw or fold
 		validmove = "DFdf"
 	default: // fold is then only option left
 		validmove = "Ff"
@@ -301,6 +301,7 @@ func DoVaildMoves(index int, validmove string) {
 		}
 	} else {
 		// do AI stuff just do first vaild option for now
+
 		move = validmove[0:1]
 	}
 
