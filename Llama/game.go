@@ -5,8 +5,6 @@ import (
 	"math/rand"
 	"sort"
 	"strings"
-	//"strconv"
-	//"strings"
 )
 
 var numberplayers = 6
@@ -38,6 +36,7 @@ type players struct {
 	score         int
 	hand          deck
 	playorder     int
+	lastplayer    bool // Indicates if this player was the last to play or fold
 }
 
 func main() {
@@ -61,7 +60,7 @@ func main() {
 	numberplayers++ // add in the human player
 
 	// Create the player array
-	for i := 0; i < numberplayers; i++ {
+	for i := 0; i < 6; i++ {
 		player[i] = NewPlayer(i)
 	}
 
@@ -103,10 +102,12 @@ func main() {
 					if len(hand) == 0 {    // If the player has no cards left, they have won the round, end the round
 						fmt.Println(player[i].name, "is all out, and has won the round")
 						roundactive = false
+						player[i].lastplayer = true // Mark this player as the last player to play
 						break
 					}
 					if activePlayerCount == 0 { // If no active players left, end the round
 						roundactive = false
+						player[i].lastplayer = true // Mark this player as the last player to play
 						break
 					}
 				}
@@ -118,6 +119,7 @@ func main() {
 		fmt.Println("----------------------------------------------------")
 
 		if CheckGameEnd() {
+			ReorderPlayers() // Reorder players for the next round
 			fmt.Println("Press return to play the next round")
 			waitkey := ""
 			fmt.Scanln(&waitkey)
@@ -285,7 +287,7 @@ func DoVaildMoves(index int, validmove string) {
 			case validmove == "CcFf":
 				fmt.Println("Play current card (C) or Fold (F)")
 			case validmove == "NnFf":
-				fmt.Println("Play Next card (C) or Fold (F)")
+				fmt.Println("Play Next card (N) or Fold (F)")
 			case validmove == "DFdf":
 				fmt.Println("Draw card (D) or Fold (F)")
 			default:
@@ -300,9 +302,14 @@ func DoVaildMoves(index int, validmove string) {
 			}
 		}
 	} else {
-		// do AI stuff just do first vaild option for now
-
-		move = validmove[0:1]
+		// do AI stuff just do either randomly pick a valid move or play the first valid move
+		rt := rand.Intn(10) // Randomly decide whether to play a card or draw a card
+		if rt < 5 {
+			rm := rand.Intn(len(validmove)) // Randomly select a valid move
+			move = string(validmove[rm])    // Get the move from the valid moves string
+		} else {
+			move = validmove[0:1]
+		}
 	}
 
 	switch move {
@@ -469,4 +476,125 @@ func DisplayGameEnd() {
 			dummyplayerSlice[i].score)
 	}
 	fmt.Println("The Winner is:", dummyplayerSlice[0].name, "with a score of", dummyplayerSlice[0].score)
+}
+
+// Figure out who starts the next round and reorder the players
+func ReorderPlayers() {
+	var lastplayer int // Variable to hold the index of the last player who played or folded
+	for i := 0; i < numberplayers; i++ {
+		if player[i].lastplayer {
+			lastplayer = i
+			player[i].lastplayer = false // Reset last player flag for the next round
+			break
+		}
+	}
+	if lastplayer == 0 {
+		return // If the last player is the first player, no need to change anything
+	}
+	// Reorder the players based on who one the last round, or who folded last
+	// I couldn't figure out how to do this with a loop so I have hard coded it for now
+	switch {
+	case numberplayers == 6:
+		switch {
+		case lastplayer == 1:
+			player[0].playorder = 5
+			player[1].playorder = 0
+			player[2].playorder = 1
+			player[3].playorder = 2
+			player[4].playorder = 3
+			player[5].playorder = 4
+		case lastplayer == 2:
+			player[0].playorder = 4
+			player[1].playorder = 5
+			player[2].playorder = 0
+			player[3].playorder = 1
+			player[4].playorder = 2
+			player[5].playorder = 3
+		case lastplayer == 3:
+			player[0].playorder = 3
+			player[1].playorder = 4
+			player[2].playorder = 5
+			player[3].playorder = 0
+			player[4].playorder = 1
+			player[5].playorder = 2
+		case lastplayer == 4:
+			player[0].playorder = 2
+			player[1].playorder = 3
+			player[2].playorder = 4
+			player[3].playorder = 5
+			player[4].playorder = 0
+			player[5].playorder = 1
+		case lastplayer == 5:
+			player[0].playorder = 1
+			player[1].playorder = 2
+			player[2].playorder = 3
+			player[3].playorder = 4
+			player[4].playorder = 5
+			player[5].playorder = 0
+		}
+	case numberplayers == 5:
+		switch {
+		case lastplayer == 1:
+			player[0].playorder = 4
+			player[1].playorder = 0
+			player[2].playorder = 1
+			player[3].playorder = 2
+			player[4].playorder = 3
+		case lastplayer == 2:
+			player[0].playorder = 3
+			player[1].playorder = 4
+			player[2].playorder = 0
+			player[3].playorder = 1
+			player[4].playorder = 2
+		case lastplayer == 3:
+			player[0].playorder = 2
+			player[1].playorder = 3
+			player[2].playorder = 4
+			player[3].playorder = 0
+			player[4].playorder = 1
+		case lastplayer == 4:
+			player[0].playorder = 1
+			player[1].playorder = 2
+			player[2].playorder = 3
+			player[3].playorder = 4
+			player[4].playorder = 0
+		}
+	case numberplayers == 4:
+		switch {
+		case lastplayer == 1:
+			player[0].playorder = 3
+			player[1].playorder = 0
+			player[2].playorder = 1
+			player[3].playorder = 2
+		case lastplayer == 2:
+			player[0].playorder = 2
+			player[1].playorder = 3
+			player[2].playorder = 0
+			player[3].playorder = 1
+		case lastplayer == 3:
+			player[0].playorder = 1
+			player[1].playorder = 2
+			player[2].playorder = 3
+			player[3].playorder = 0
+		}
+	case numberplayers == 3:
+		switch {
+		case lastplayer == 1:
+			player[0].playorder = 2
+			player[1].playorder = 0
+			player[2].playorder = 1
+
+		case lastplayer == 2:
+			player[0].playorder = 1
+			player[1].playorder = 2
+			player[2].playorder = 0
+		}
+	case numberplayers == 2:
+		player[0].playorder = 1
+		player[1].playorder = 0
+	}
+	// Sort players by playorder by the new play order values
+	sort.SliceStable(player[:], func(i, j int) bool {
+		return player[i].playorder < player[j].playorder
+	})
 }
