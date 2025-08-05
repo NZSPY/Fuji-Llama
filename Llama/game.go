@@ -364,7 +364,7 @@ func EndofRoundScore() {
 			case player[i].hand[ii].cardvalue == 0:
 				// do nothing
 			case player[i].hand[ii].cardvalue == 7:
-				b = 1 // Llama is worth 1 black counter but only get 1 black counter no matter how many you have
+				b++ // Llama is worth 1 black counter (10 points)
 			default:
 				a = a + player[i].hand[ii].cardvalue
 			}
