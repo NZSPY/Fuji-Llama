@@ -38,11 +38,8 @@ The round ends when one player empties their hand or all players have folded.
 
 # Scoring:
 Cards in Hand: Each unique number card in your hand is worth its face value in points (e.g., a 3 is worth 3 points).
- 
 Llamas: Each llama card in your hand is worth 10 points.
- 
 Discarded Cards: Cards played and discarded are not counted towards your score.
- 
 Returning Tokens: If you manage to play all your cards, you can return one token (black or white) to the supply.
 (this happens automatically) 
 
