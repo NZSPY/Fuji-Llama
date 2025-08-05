@@ -1,29 +1,27 @@
 # Fuji-Llama 
-This is a Llama Card game server written in GO. 
-This is my application written in GO, 
+This is a Llama Card game server written in GO.
+This is my application written in GO,
 
-so has been a learning exercise in Go so probably not the best coding example. 
-
+so has been a learning exercise in Go so probably not the best coding example.
 But you can play Llama just install Go onto your computer and download the code and run it
-
 You can  play Llama in your terminal program as 1 player (Me) against up to 5 AI bots
 
-# The game of Llama 
+# The game of Llama
 
-In the L.L.A.M.A. card game, the goal is to get rid of all your cards by playing them in sequence, 
-either matching the top card of the discard pile or playing one number higher, 
-including llamas, which can be played on 6s or other llamas. 
-Players can also draw cards or quit the round, 
-with penalties assessed based on the cards left in hand at the end of the round. 
-The game continues until a player reaches 40 points, with the lowest score winning. 
+In the L.L.A.M.A. card game, the goal is to get rid of all your cards by playing them in sequence,
+either matching the top card of the discard pile or playing one number higher,
+including llamas, which can be played on 6s or other llamas.
+Players can also draw cards or quit the round,
+with penalties assessed based on the cards left in hand at the end of the round.
+The game continues until a player reaches 40 points, with the lowest score winning.
 
 Here's a more detailed breakdown:
 # Game Setup:
 Players: 2-6 players. (you and 1 up to 5 AI bots)
-Cards: A deck of cards with numbers 1-6 and llamas, with eight copies of each. 
-Point Tokens: White (worth 1 point) and black (worth 10 points) are used for scoring. 
-Dealing: Each player gets six cards dealt face down. 
-Discard Pile: One card is flipped from the deck to start the discard pile. 
+Cards: A deck of cards with numbers 1-6 and llamas, with eight copies of each.
+Point Tokens: White (worth 1 point) and black (worth 10 points) are used for scoring.
+Dealing: Each player gets six cards dealt face down.
+Discard Pile: One card is flipped from the deck to start the discard pile.
 # Gameplay:
 1. Turns:
 Players take turns in clockwise order. 
