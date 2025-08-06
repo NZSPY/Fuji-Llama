@@ -303,8 +303,8 @@ func DoVaildMoves(index int, validmove string) {
 		}
 	} else {
 		// do AI stuff just do either randomly pick a valid move or play the first valid move
-		rt := rand.Intn(10) // Randomly decide whether to play a card or draw a card
-		if rt < 5 {
+		rt := rand.Intn(10) // Randomly decide whether to play a card or draw a card or fold
+		if rt < 3 {
 			rm := rand.Intn(len(validmove)) // Randomly select a valid move
 			move = string(validmove[rm])    // Get the move from the valid moves string
 		} else {
