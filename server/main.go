@@ -66,7 +66,7 @@ func main() {
 
 	router.GET("/tables", apiTables)
 	router.GET("/updateLobby", apiUpdateLobby)
-
+	router.SetTrustedProxies(nil) // Disable trusted proxies because Gin told me to do it.. (neeed to investigate this further)
 	//	router.GET("/REFRESHLOBBY", apiRefresh)
 
 	initializeGameServer()
