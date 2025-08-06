@@ -1,0 +1,24 @@
+' Fuji-Llama Title Page
+' Written in Atari FastBasic
+
+GRAPHICS 3
+SETCOLOR 2,0,0
+SETCOLOR 1,14,6
+
+POSITION 10,5
+?"*** FUJI-LLAMA ***"
+
+POSITION 6,8
+?"PRESS ANY KEY TO START"
+
+FOR I=1 TO 100
+    COLOR I MOD 14 + 1
+    POSITION RND(20),RND(10)
+    ?"*"
+NEXT I
+
+DO
+    IF STRIG(0)=0 THEN EXIT
+LOOP
+
+GRAPHICS 0
