@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -52,6 +53,8 @@ func main() {
 	log.Printf("Listing on port %s", port)
 
 	router := gin.Default()
+
+	router.Use(cors.Default()) // All origins allowed by default (added this for testing via java script)
 
 	router.GET("/view", apiView)
 
