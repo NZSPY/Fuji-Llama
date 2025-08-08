@@ -23,6 +23,9 @@ var currentdeck deck
 type card struct {
 	cardvalue int
 	cardname  string
+	// use these to get erics code going
+	value int
+	suit  int
 }
 
 // Deck represents a collection of cards.
@@ -41,6 +44,13 @@ type players struct {
 }
 
 // Added the following in from Erics code to try and get is server running with my game logic etc
+
+// Drop players who do not make a move in 5 minutes
+const PLAYER_PING_TIMEOUT = time.Minute * time.Duration(-5)
+const WAITING_MESSAGE = "Waiting for more players"
+const STARTING_PURSE = 200
+
+var botNames = []string{"Clyd", "Jim", "Kirk", "Hulk", "Fry", "Meg", "Grif", "GPT"}
 
 type GameTable struct {
 	Table      string `json:"t"`
@@ -97,13 +107,20 @@ type validMove struct {
 
 type Status int64
 
+const (
+	STATUS_WAITING Status = 0
+	STATUS_PLAYING Status = 1
+	STATUS_FOLDED  Status = 2
+	STATUS_LEFT    Status = 3
+)
+
 func initializeGameServer() {
-	/* just comenet thsi lot out for now till I work out what to do
+
 	// Append BOT to botNames array
 	for i := 0; i < len(botNames); i++ {
 		botNames[i] = botNames[i] + " BOT"
 	}
-	*/
+
 }
 
 func (state *GameState) performMove(move string, internalCall ...bool) bool {
@@ -452,35 +469,33 @@ func (state *GameState) clientLeave() {
 }
 
 func (state *GameState) updateLobby() {
-	/*
 
-		if !state.registerLobby {
-			return
-		}
+	if !state.registerLobby {
+		return
+	}
 
-		humanPlayerSlots, humanPlayerCount := state.getHumanPlayerCountInfo()
+	humanPlayerSlots, humanPlayerCount := state.getHumanPlayerCountInfo()
 
-		// Send the total human slots / players to the Lobby
-		sendStateToLobby(humanPlayerSlots, humanPlayerCount, true, state.serverName, "?table="+state.table)
+	// Send the total human slots / players to the Lobby
+	sendStateToLobby(humanPlayerSlots, humanPlayerCount, true, state.serverName, "?table="+state.table)
 
-	*/
 }
 
 // Return number of active human players in the table, for the lobby
 func (state *GameState) getHumanPlayerCountInfo() (int, int) {
-	humanAvailSlots := 8
+	humanAvailSlots := 6
 	humanPlayerCount := 0
-	/*
-		cutoff := time.Now().Add(PLAYER_PING_TIMEOUT)
 
-		for _, player := range state.Players {
-			if player.isBot {
-				humanAvailSlots--
-			} else if player.Status != STATUS_LEFT && player.lastPing.Compare(cutoff) > 0 {
-				humanPlayerCount++
-			}
+	cutoff := time.Now().Add(PLAYER_PING_TIMEOUT)
+
+	for _, player := range state.Players {
+		if player.isBot {
+			humanAvailSlots--
+		} else if player.Status != STATUS_LEFT && player.lastPing.Compare(cutoff) > 0 {
+			humanPlayerCount++
 		}
-	*/
+	}
+
 	return humanAvailSlots, humanPlayerCount
 }
 
@@ -524,34 +539,47 @@ func (state *GameState) setClientPlayerByName(playerName string) {
 }
 
 func createGameState(playerCount int, registerLobby bool) *GameState {
-	/*
-		deck := []card{}
 
-		// Create deck of 52 cards
-		for suit := 0; suit < 4; suit++ {
-			for value := 2; value < 15; value++ {
-				card := card{value: value, suit: suit}
-				deck = append(deck, card)
-			}
+	deck := []card{}
+
+	// Create deck of 52 cards
+	for suit := 0; suit < 4; suit++ {
+		for value := 2; value < 15; value++ {
+			card := card{value: value, suit: suit}
+			deck = append(deck, card)
 		}
-	*/
+	}
+
 	state := GameState{}
-	/*
-		state.deck = deck
-		state.Round = 0
-		state.ActivePlayer = -1
-		state.registerLobby = registerLobby
 
-		// Pre-populate player pool with bots
-		for i := 0; i < playerCount; i++ {
-			state.addPlayer(botNames[i], true)
-		}
+	state.deck = deck
+	state.Round = 0
+	state.ActivePlayer = -1
+	state.registerLobby = registerLobby
 
-		if playerCount < 2 {
-			state.LastResult = WAITING_MESSAGE
-		}
-	*/
+	// Pre-populate player pool with bots
+	for i := 0; i < playerCount; i++ {
+		state.addPlayer(botNames[i], true)
+	}
+
+	if playerCount < 2 {
+		state.LastResult = WAITING_MESSAGE
+	}
+
 	return &state
+}
+
+func (state *GameState) addPlayer(playerName string, isBot bool) {
+
+	newPlayer := Player{
+		Name:   playerName,
+		Status: 0,
+		Purse:  STARTING_PURSE,
+		cards:  []card{},
+		isBot:  isBot,
+	}
+
+	state.Players = append(state.Players, newPlayer)
 }
 
 // my code from here the old main loop ...
