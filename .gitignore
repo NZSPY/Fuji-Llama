@@ -1,4 +1,4 @@
 .DS_Store
 .vscode
 settings.json
-Atari/Bin/*
+/Atari/Bin/*
