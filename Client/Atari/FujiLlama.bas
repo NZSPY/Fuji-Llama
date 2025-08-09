@@ -2,67 +2,96 @@
 ' Written in Atari FastBasic
 ' @author  Simon Young
 
-DIM result(1024) BYTE
+' Fuji-Net Setup Variblies 
+UNIT=1
+DIM RESULT(1024) BYTE
 JSON_MODE=1
+URL$="N:HTTP://192.168.68.100:8080/tables"
+QUERY$=""
 
+
+' Draw the opening screen 
 GRAPHICS 0
 SETCOLOR 2,0,0
 SETCOLOR 1,14,6
-
-
 ?"*** Welcome to Fuji-Llama ***"
-
 ?"Choose a table to join"
 
-unit=8
-URL$="N:HTTP://192.168.68.100:8080/tables"
-query$="N:tables"$9B
-' Open connection
-NOPEN unit, 12, 0, URL$
+? "press and key to open the connection"
+@Wait
+@openconnection
+
+? "press and key to setup JSON"
+@Wait
+
+@nsetchannelmode 
+@nparsejson
+IF SErr()<>1
+'PRINT "Could not parse JSON."
+@nprinterror
+@Wait
+ENDIF
+
+@getresult
+@Wait
+
+? $(&RESULT)
+
+? "done"
+@Wait
+NCLOSE UNIT
+
+
+PROC Wait
+K=0
+POKE 764,255
+REPEAT 
+K=key()
+UNTIL K<>0
+ENDPROC
+
+' PROCEDURES to get Json data and load into the Var Result
+
+PROC openconnection ' Open the connection, or throw error and end program
+NOPEN UNIT, 12, 0, URL$
 ' If not successful, then exit.
 IF SERR()<>1
 PRINT "Could not open connection."
-NSTATUS unit
-PRINT "ERROR- "; PEEK($02ED)
+@nprinterror
+EXIT
 ELSE
-
-PRINT "horray"
-
-
+PRINT "Horray"
 ENDIF
+ENDPROC
 
+PROC nsetchannelmode ' Set the channel mode to the JSON_mode
+SIO $71, UNIT, $FC, $00, 0, $1F, 0, 12, JSON_MODE
+ENDPROC
 
-NCLOSE unit
+PROC nparsejson ' send Parse to the FujiNet, so it parses the JSON value set by teh URL$
+SIO $71, UNIT, $50, $00, 0, $1f, 0, 12, 0
+ENDPROC
 
-REPEAT 
-k=key()
-UNTIL k<>0
+PROC njsonquery ' Querey the JSON data that has been parsesed base on the attributes in $query
+SIO $71, UNIT, $51, $80, &query$+1, $1f, 256, 12, 0
+ENDPROC
 
-' PROCEDURES '''''''''''''''''''''''''
-PROC nprinterror
-NSTATUS unit
+PROC nprinterror ' get the current eror and display on screen 
+NSTATUS UNIT
 PRINT "ERROR- "; PEEK($02ED)
 ENDPROC
-PROC nsetchannelmode mode
-SIO $71, unit, $FC, $00, 0, $1F, 0, 12, JSON_MODE
-ENDPROC
-PROC nparsejson
-SIO $71, unit, $50, $00, 0, $1f, 0, 12, 0
-ENDPROC
-PROC njsonquery
-SIO $71, unit, $51, $80, &query$+1, $1f, 256, 12, 0
-ENDPROC
-PROC showresult
+
+PROC getresult
 @njsonquery
-'NSTATUS unit
-'IF PEEK($02ED) > 0
-'PRINT "Could not fetch query:"
-'PRINT query$
-'PRINT "ERROR- "; PEEK($02ED)
-'EXIT
-'ENDIF
+NSTATUS UNIT
+IF PEEK($02ED) > 128
+PRINT "Could not fetch query:"
+PRINT QUERY$
+PRINT "ERROR- "; PEEK($02ED)
+EXIT
+ENDIF
 BW=DPEEK($02EA)
-NGET unit, &result, BW
-BPUT #0,  &result, BW
+NGET UNIT, &RESULT, BW
+' BPUT #0,  &RESULT, BW 
 ENDPROC
 
